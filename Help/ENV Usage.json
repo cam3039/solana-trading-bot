@@ -1,0 +1,173 @@
+#comment Below is a structured explanation of the environment file settings for the Solana trading bot. 
+#comment We’ll define acronyms on their first use and give real-life analogies, especially relating to 
+#comment how traditional buying and selling might work with banks or retailers. We’ll also clarify 
+#comment back-end (server-side) details where necessary.
+
+{
+  "EnvironmentVariablesExplanation": {
+    "Wallet": {
+      "PRIVATE_KEY": {
+        "meaning": "Your wallet’s private key. In real-life terms, think of it like your secret PIN for your debit card. It’s how you prove ownership of the funds in your account on the Solana blockchain.",
+        "whyNeeded": "The trading bot needs this secret so it can authorize transactions on your behalf. Without it, the bot can’t sign any buy or sell orders."
+      }
+    },
+    "Connection": {
+      "RPC_ENDPOINT": {
+        "meaning": "RPC stands for Remote Procedure Call. It’s basically a URL (web address) that your bot contacts to talk to the Solana network.",
+        "realLifeAnalogy": "Imagine a bank’s phone line or website address. When you want to send money or check your balance, you use that line of communication. Here, your bot uses this endpoint to interact with Solana’s ‘banking system.’"
+      },
+      "RPC_WEBSOCKET_ENDPOINT": {
+        "meaning": "A WebSocket is a technology allowing continuous, real-time communication between your bot and the Solana network. This endpoint is the WebSocket version of the RPC endpoint.",
+        "realLifeAnalogy": "It’s like having a live chat or ‘hotline’ with the bank, so your bot can receive instant updates (for example, about transaction confirmations or new market data)."
+      },
+      "COMMITMENT_LEVEL": {
+        "meaning": "This defines how certain your bot wants to be about a transaction’s confirmation before treating it as final. Solana confirmations can come in different ‘levels.’ ‘confirmed’ means it has been processed by the cluster but not fully finalized.",
+        "realLifeAnalogy": "Imagine when you deposit a check: your bank might ‘confirm’ it after a certain period, but it may not treat it as absolutely final until the check fully clears. The bot uses the ‘confirmed’ level to consider a transaction good enough."
+      }
+    },
+    "Bot": {
+      "LOG_LEVEL": {
+        "meaning": "Determines how much detail (verbosity) the bot prints out while running. ‘trace’ is very detailed.",
+        "realLifeAnalogy": "Like setting your bank statement to itemize every tiny detail of your transactions versus just listing the big deposits and withdrawals."
+      },
+      "ONE_TOKEN_AT_A_TIME": {
+        "meaning": "If true, the bot will focus on trading one token before moving on to the next. It won’t juggle multiple tokens simultaneously.",
+        "realLifeAnalogy": "Like a personal shopper who only buys one type of product at a time so they don't mix up orders."
+      },
+      "PRE_LOAD_EXISTING_MARKETS": {
+        "meaning": "If true, the bot will load a set of known markets (trading places for various tokens) in advance. If false, it won’t pre-load them.",
+        "realLifeAnalogy": "It’s like having a list of known retailers you plan to visit before actually going shopping versus discovering them on the fly."
+      },
+      "CACHE_NEW_MARKETS": {
+        "meaning": "If true, the bot will store (cache) newly discovered markets for later reuse, so it doesn’t have to re-discover them every time it restarts.",
+        "realLifeAnalogy": "When you find a new store you like, you remember it in your notes so next time you don’t have to search all over again."
+      },
+      "TRANSACTION_EXECUTOR": {
+        "meaning": "Defines which method the bot uses to send transactions. Common options: default, warp, jito. Each has different behaviors or fees on Solana.",
+        "realLifeAnalogy": "Choosing different shipping methods for online shopping—standard, express, or a specialized courier service. Different methods have different speeds or costs."
+      },
+      "COMPUTE_UNIT_LIMIT": {
+        "meaning": "A ‘compute unit’ is a measure of how much computational work a transaction requires on Solana. This sets the maximum amount of compute power your transaction can consume.",
+        "realLifeAnalogy": "If you were calling a busy service center (the blockchain), this sets how long your call is allowed to go on before being disconnected."
+      },
+      "COMPUTE_UNIT_PRICE": {
+        "meaning": "How much you pay per compute unit in ‘lamports’ (Solana’s smallest currency fraction) when using the default transaction executor. In real terms, it’s the fee you offer to get priority or handle your transaction’s complexity.",
+        "realLifeAnalogy": "Like paying for a certain number of minutes on a call, or paying extra for the clerk’s time at the bank if your request is complex."
+      },
+      "CUSTOM_FEE": {
+        "meaning": "If you’re using other executors (warp or jito), this is a custom fee you’ll pay per transaction. 0.006 means 0.006 SOL (if that’s how the bot interprets it).",
+        "realLifeAnalogy": "Similar to paying a flat convenience fee instead of a minute-by-minute charge."
+      }
+    },
+    "Buy": {
+      "QUOTE_MINT": {
+        "meaning": "Which token you’re using to buy other tokens. WSOL stands for Wrapped SOL (Solana’s native currency, SOL, wrapped in a token form).",
+        "realLifeAnalogy": "If you shop in a foreign country, you might use your debit card that’s automatically converted to local currency. Here, WSOL is your ‘spending currency’ to trade for other tokens."
+      },
+      "QUOTE_AMOUNT": {
+        "meaning": "How much of your quote currency (e.g., WSOL) you want to spend per trade.",
+        "realLifeAnalogy": "Like saying ‘I will spend $10 per shopping trip, max.’"
+      },
+      "AUTO_BUY_DELAY": {
+        "meaning": "How long the bot waits before trying to buy automatically after a condition is met (in milliseconds). 0 means it buys immediately.",
+        "realLifeAnalogy": "Your personal shopper, right after you say ‘yes, buy it,’ either waits a bit or buys straight away."
+      },
+      "MAX_BUY_RETRIES": {
+        "meaning": "How many times the bot will attempt to buy a token if the initial transaction fails.",
+        "realLifeAnalogy": "If your credit card is declined, how many times you try swiping again or calling the bank before giving up."
+      },
+      "BUY_SLIPPAGE": {
+        "meaning": "Slippage refers to the difference between the price you expect and the actual price you pay, especially in a fast-moving market. A 20 means 20%, though the code’s internal interpretation can vary. It sets how much price difference you’re willing to tolerate for the transaction to still proceed.",
+        "realLifeAnalogy": "If you expect a loaf of bread to cost $2 but the price jumped to $2.40 (20% more), you’d still go ahead. Beyond that, maybe you’d cancel."
+      }
+    },
+    "Sell": {
+      "AUTO_SELL": {
+        "meaning": "If true, the bot automatically sells tokens it has bought after certain conditions (like profit targets or time).",
+        "realLifeAnalogy": "If you put items on sale automatically after they reach a certain market value, without you having to do it manually each time."
+      },
+      "MAX_SELL_RETRIES": {
+        "meaning": "Number of times the bot tries to sell if the first attempt fails.",
+        "realLifeAnalogy": "The same concept as with buying—attempting to process the transaction multiple times if you get an error."
+      },
+      "AUTO_SELL_DELAY": {
+        "meaning": "Similar to AUTO_BUY_DELAY, this sets how long the bot waits before automatically selling.",
+        "realLifeAnalogy": "Delay before your personal shopper resells an item that has increased in value."
+      },
+      "PRICE_CHECK_INTERVAL": {
+        "meaning": "How often (in milliseconds) the bot checks the current price of a token it’s holding.",
+        "realLifeAnalogy": "Like refreshing a stock price page every 2 seconds to see if the market moved."
+      },
+      "PRICE_CHECK_DURATION": {
+        "meaning": "How long (in milliseconds) the bot keeps checking the price before deciding it’s time to act or stop monitoring.",
+        "realLifeAnalogy": "If you said, ‘Check this item’s price for 10 minutes, and if it doesn’t meet my desired profit, give up.’"
+      },
+      "TAKE_PROFIT": {
+        "meaning": "A percentage of profit at which the bot automatically sells. 40 means 40% gain.",
+        "realLifeAnalogy": "If you bought bread at $2, you’ll sell it when you can get $2.80 (a 40% profit)."
+      },
+      "STOP_LOSS": {
+        "meaning": "A percentage of loss at which the bot automatically sells to avoid further losses. 20 means if the price drops 20% below what you paid, it sells.",
+        "realLifeAnalogy": "If that bread drops to $1.60, you cut your losses and sell now, to avoid it dropping to $1.00."
+      },
+      "SELL_SLIPPAGE": {
+        "meaning": "Just like BUY_SLIPPAGE but for selling. It’s how much price difference you tolerate from your expected sell price.",
+        "realLifeAnalogy": "If you wanted $2.80 but the best immediate offer is $2.24 (a big difference), you might accept it if your slippage tolerance is 20% or more."
+      }
+    },
+    "Filters": {
+      "USE_SNIPE_LIST": {
+        "meaning": "If true, the bot uses a predefined list of tokens to target for buying (often referred to as a snipe list).",
+        "realLifeAnalogy": "Like having a shopping list of items you absolutely want to grab quickly."
+      },
+      "SNIPE_LIST_REFRESH_INTERVAL": {
+        "meaning": "How often (in milliseconds) the bot refreshes (reloads) that snipe list from a source.",
+        "realLifeAnalogy": "If you periodically update your grocery list by syncing with your friend who might be adding new items."
+      },
+      "FILTER_CHECK_DURATION": {
+        "meaning": "How long (in milliseconds) the bot applies its checks/filters to see if a token meets certain conditions before it buys.",
+        "realLifeAnalogy": "If you research a product for 60 seconds before deciding whether to buy it."
+      },
+      "FILTER_CHECK_INTERVAL": {
+        "meaning": "How frequently (in milliseconds) the bot runs its filters to see if the token still meets the conditions.",
+        "realLifeAnalogy": "If you look up reviews every 2 seconds to confirm whether the item is still good."
+      },
+      "CONSECUTIVE_FILTER_MATCHES": {
+        "meaning": "How many times in a row the token must pass the filter check before the bot will actually act on it.",
+        "realLifeAnalogy": "If you want consistent feedback that an item is of good quality multiple times before you buy."
+      },
+      "CHECK_IF_MUTABLE": {
+        "meaning": "Whether or not to check if the token’s contract can still be changed by its creators. If false, it means you skip this check, or you require it to be non-changeable.",
+        "realLifeAnalogy": "Making sure a store’s return policy or item details can’t suddenly be changed after you buy. Some people only trust items with stable, unchangeable details."
+      },
+      "CHECK_IF_SOCIALS": {
+        "meaning": "Check if the project behind the token has reputable social media presence. If this is true, the bot wants to see if the project’s social channels exist or have enough following.",
+        "realLifeAnalogy": "Before you buy from a new brand, you look if they have a legitimate social media footprint or brand reputation."
+      },
+      "CHECK_IF_MINT_IS_RENOUNCED": {
+        "meaning": "Checks if the token creators have ‘renounced’ or given up the ability to mint (create) new tokens. If renounced, they can’t inflate supply unexpectedly.",
+        "realLifeAnalogy": "Ensuring the retailer can’t just produce unlimited coupons or print money, which would devalue yours."
+      },
+      "CHECK_IF_FREEZABLE": {
+        "meaning": "Checks if the token can be frozen by the contract owner (some tokens allow owners to freeze user balances).",
+        "realLifeAnalogy": "Making sure the store (or someone else) can’t just freeze your assets or lock your purchase after you’ve already paid."
+      },
+      "CHECK_IF_BURNED": {
+        "meaning": "Checks if the contract’s authority has been burned or destroyed, meaning no one can change certain aspects anymore. ‘Burning’ an authority on Solana is a way of permanently revoking control.",
+        "realLifeAnalogy": "Confirming that the store manager’s master key has been thrown away so they can’t meddle with your item’s authenticity after purchase."
+      },
+      "MIN_POOL_SIZE": {
+        "meaning": "Minimum size of the token’s liquidity pool the bot is willing to trade in. A liquidity pool is basically how much of the token is available to buy/sell on the market.",
+        "realLifeAnalogy": "You wouldn’t want to buy from a store that only stocks 1 or 2 items because you can’t be sure you can sell it later. MIN_POOL_SIZE ensures there’s enough stock to trade in or out easily."
+      },
+      "MAX_POOL_SIZE": {
+        "meaning": "Maximum size of the token’s liquidity pool the bot is willing to trade in. If it’s too large, it might be suspicious or not fit your bot’s strategy (depending on how the code is written).",
+        "realLifeAnalogy": "You might avoid certain mega-stores or huge inventory situations if your personal strategy is to buy niche items with more potential for fast price movements."
+      }
+    },
+    "OverallSummary": {
+      "howItAllRelates": "All these settings determine what your trading bot does under the hood—how it buys, how it sells, how it communicates with the Solana blockchain, and which tokens it considers safe or profitable to trade.",
+      "realLifeParallel": "If you think of crypto trading like shopping at many online stores simultaneously, the environment variables control your payment method (PRIVATE_KEY), your means of contacting the store (RPC_ENDPOINT), how you choose items (FILTERS, SNIPE_LIST), and how you decide to buy or sell (AUTO_BUY, AUTO_SELL, SLIPPAGE)."
+    }
+  }
+}
